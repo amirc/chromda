@@ -1,12 +1,13 @@
 service: chromda
 
 custom:
-  s3Bucket: chromda-files
+  s3Bucket: anima-screenshots
   snsTopic: chromda
+  s3DefaultKeyPrefix: tmp/
 
 provider:
   name: aws
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'us-west-2'}
   versionFunctions: false
   layers:
     # Google Chrome for AWS Lambda as a layer
@@ -44,6 +45,7 @@ functions:
     environment:
       S3_REGION: ${self:provider.region}
       S3_BUCKET: ${self:custom.s3Bucket}
+      S3_DEFAULT_KEY_PREFIX: ${self:custom.s3DefaultKeyPrefix}
       # Optional vars
       CHROMIUM_ARGS: "[]"
       TIMEOUT: "30000"

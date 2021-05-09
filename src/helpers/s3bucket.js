@@ -4,6 +4,7 @@ const uuid4 = require("uuid/v4");
 
 const S3_BUCKET = process.env.S3_BUCKET;
 const S3_REGION = process.env.S3_REGION;
+const S3_DEFAULT_KEY_PREFIX = process.env.S3_DEFAULT_KEY_PREFIX || '';
 const S3_ACL = process.env.S3_ACL || "public-read";
 
 const s3 = AWSXRay.captureAWSClient(new S3({ region: S3_REGION }));
@@ -19,7 +20,7 @@ const s3 = AWSXRay.captureAWSClient(new S3({ region: S3_REGION }));
  */
 exports.upload = async (buffer, format, bucketKey) => {
   const uuid = uuid4();
-  const key = bucketKey || `${uuid}.${format}`;
+  const key = bucketKey || `${S3_DEFAULT_KEY_PREFIX}${uuid}.${format}`;
 
   const { Location } = await s3
     .upload({
